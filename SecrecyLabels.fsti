@@ -12,6 +12,7 @@ type result (a:Type) =
   | Success: v:a -> result a
   | Error: e:string -> result a
 
+// Monad-like definitions. This is basically my own Result type !
 let bind #a #b (f:result a) (g:a -> result b) : result b =
     match f with
     | Success x -> g x
@@ -37,8 +38,11 @@ type principal = string
 ///
 /// An ``id`` describes a (set of) version(s) of a (set of) session(s) of a principal.
 type id =
+  // principal
   | P: p:principal -> id
+  // session
   | S: p:principal -> session:nat -> id
+  // version
   | V: p:principal -> session:nat -> version:nat -> id
 
 (** Get the principal from a an id [vsid] *)
@@ -109,6 +113,7 @@ val meet: label -> label -> label
 let private_label = readers []
 let join_opt l1 l2o = match l2o with | Some x -> join l1 x | None -> l1
 
+// ???
 val unversion: label -> label
 
 /// Check whether a given ``id`` is in the "intended audience" of a label.
@@ -129,6 +134,7 @@ val meet_is_equal : l1:label -> l2:label -> Lemma (meet l1 l2 == meet l2 l1) [SM
 
 noeq type corrupt_pred = {
   corrupt_id: timestamp -> id -> Type0;
+  // if x is corrupted at t1, then it is corrupted later as well
   corrupt_id_later: t1:timestamp -> t2:timestamp ->
                     Lemma (forall x. corrupt_id t1 x /\ later_than t2 t1 ==> corrupt_id t2 x);
 /// TODO DOC: Is the following correct?
@@ -136,6 +142,7 @@ noeq type corrupt_pred = {
 /// somehow related to A (i.e., is labeled with ``readers [P A]``), and some corrupted
 /// session/version in A's state. Since we don't know whether n belongs to that corrupted version or
 /// not, we have to assume the worst, i.e., we have to treat n as "corrupted".
+  // corruption grows upward
   corrupt_id_covers: ts:timestamp ->
                     Lemma(forall x y. (covers x y = true /\ corrupt_id ts y) ==> corrupt_id ts x)
 }

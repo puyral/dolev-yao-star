@@ -1,4 +1,8 @@
 **/ocaml/
+**/ocaml-symbolic/
+**/.vscode
+**/*.symbolic
+**/.DS_Store
 
 .cache
 .hints

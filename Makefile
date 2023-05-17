@@ -19,6 +19,7 @@ FSTAR_FLAGS = --cmi \
   $(addprefix --include ,$(FSTAR_INCLUDE_DIRS))
 
 FSTAR = $(FSTAR_HOME)/bin/fstar.exe $(FSTAR_FLAGS) $(OTHERFLAGS)
+# FSTAR = fstar.exe $(FSTAR_FLAGS) $(OTHERFLAGS)
 
 ENABLE_HINTS = --use_hints --use_hint_hashes --record_hints # --query_stats
 
@@ -42,6 +43,7 @@ $(CACHE_DIR)/%.checked: | .depend.symbolic $(HINT_DIR) $(CACHE_DIR)
 	$(FSTAR) $< $(ENABLE_HINTS) --hint_file $(HINT_DIR)/$(notdir $*).hints
 
 verify: $(addsuffix .checked, $(addprefix $(CACHE_DIR)/,$(ROOTS)))
+	# $(addsuffix .checked, $(addprefix $(CACHE_DIR)/,$(ROOTS)))
 
 # Targets for interactive mode
 
