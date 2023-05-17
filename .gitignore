@@ -4,7 +4,6 @@
 **/*.symbolic
 **/.DS_Store
 
-
 .cache
 .hints
 .depend
