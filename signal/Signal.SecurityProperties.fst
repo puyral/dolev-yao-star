@@ -9,6 +9,7 @@ let msg_secret i a b m =
   includes_corrupt_2_lemma i (P a) (P b);
   ()
 
+
 val x3dh_labeled_key_secret_i: i:nat -> j:nat -> a:principal -> sid:nat -> b:principal ->
     Lemma (forall k spk opk. (i <= j /\ is_labeled signal_global_usage i k (x3dh_key_label_i a sid b spk opk) /\
 			       can_flow j (get_label signal_key_usages k) public) ==>
