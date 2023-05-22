@@ -8,8 +8,9 @@ open GlobalRuntimeLib
 open LabeledCryptoAPI
 open LabeledRuntimeAPI
 open LabeledPKI
-open NSL.Messages
-open NSL.Sessions
+// open NSL.Sessions
+module Sessions =  NSL.Sessions
+module Msg = NSL.Messages
 
 (*
 Needham-Schroeder-Lowe Fixed Public Key Protocol [2]
@@ -25,14 +26,14 @@ A -> B: {N_B}K_PA          msg 3
 val initiator_send_msg_1:
   a:principal ->
   b:principal ->
-  LCrypto (si:nat * mi:nat) (pki nsl)
+  LCrypto (si:nat * mi:nat) (pki Sessions.nsl)
   (requires fun t0 -> True)
   (ensures fun t0 msg_idx t1 -> True)
 
 val responder_send_msg_2:
   b:principal ->
   msg_idx: nat -> //index of the input message in trace
-  LCrypto (si:nat * mi:nat) (pki nsl)
+  LCrypto (si:nat * mi:nat) (pki Sessions.nsl)
   (requires fun t0 ->  True)
   (ensures fun t0 idx t1 -> True)
 
@@ -40,7 +41,7 @@ val initiator_send_msg_3:
   a:principal ->
   idx_init_session:nat ->
   msg_idx: nat -> //index of the input message in trace
-  LCrypto nat (pki nsl)
+  LCrypto nat (pki Sessions.nsl)
   (requires fun t0 -> True)
   (ensures fun t0 _ t1 -> True)
 
@@ -48,7 +49,7 @@ val responder_receive_msg_3:
    b:principal ->
    idx_resp_session:nat ->
    msg_idx: nat -> //index of the input message in trace
-   LCrypto unit (pki nsl)
+   LCrypto unit (pki Sessions.nsl)
    (requires fun t0 -> True)
    (ensures fun t0 _ t1 -> True)
 
